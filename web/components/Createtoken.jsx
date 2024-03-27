@@ -33,12 +33,15 @@ const CreateToken = () => {
     e.preventDefault();
     let formData = new FormData();
     formData.append("network",network);
-    formData.append("wallet", wallet);
+    formData.append("wallet", wallet2);
     formData.append("name",name);
     formData.append("symbol",symbol);
     formData.append("decimals",decimals);
     formData.append("description",desc);
-
+    formData.append("fee_payer",wallet2);
+    formData.append("file",image);
+    formData.append("priority_fee",100);
+    
     
     axios({
         // Endpoint
@@ -46,12 +49,10 @@ const CreateToken = () => {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
-          "x-api-key": "FVejZwLRIaPbxTUr", //Enter your API key here
-          Accept: "*/*",
-          "Access-Control-Allow-Origin": "*",
+          "x-api-key": "FVejZwLRIaPbxTUr",
+          "accept": "application/json",
+          // "Access-Control-Allow-Origin": "*",
         },
-  
-        // Attaching the form data
         data: formData,
       })
         // Handle the response from backend here
@@ -69,7 +70,7 @@ const CreateToken = () => {
   
         // Catch errors if any
         .catch((err) => {
-          console.warn(err);
+          console.log(err);
         });
   }
   const [toWallet,setToWallet] = useState("");
@@ -275,7 +276,7 @@ const CreateToken = () => {
               </div>
             </div>
             {status && <div className="pt-5 ps-2">
-              <h2 className="pt-4 text-center text-light cfont">Airdrop this newly created COIN</h2>
+              <h2 className="pt-4 text-center text-light cfont">Airdrop this newly created Token</h2>
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="mt-8">
