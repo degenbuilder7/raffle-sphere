@@ -49,7 +49,7 @@ const CreateToken = () => {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
-          "x-api-key": "FVejZwLRIaPbxTUr",
+          "x-api-key": process.env.NEXT_PUBLIC_SHYFT_API_KEY,
           "accept": "application/json",
           // "Access-Control-Allow-Origin": "*",
         },
@@ -83,7 +83,7 @@ const CreateToken = () => {
       url: "https://api.shyft.to/sol/v1/token/mint_detach",
       method: "POST",
       headers: {
-        "x-api-key": "FVejZwLRIaPbxTUr", //Enter your API key here
+        "x-api-key": process.env.NEXT_PUBLIC_SHYFT_API_KEY, //Enter your API key here
       },
       data: {
         "network": network,
