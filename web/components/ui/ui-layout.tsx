@@ -69,16 +69,6 @@ export function UiLayout({
         </Suspense>
         <Toaster position="bottom-right" />
       </div>
-      <footer className="footer footer-center p-4 bg-base-300 text-base-content">
-        <aside>
-          <p>
-            Made with ❤️ by{' '}
-            <Link href="https://twitter.com/0xkamal7" target="_blank">
-              0xkamal7
-            </Link>
-          </p>
-        </aside>
-      </footer>
     </div>
   );
 }

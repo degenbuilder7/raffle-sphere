@@ -1,15 +1,15 @@
+"use client";
 import { useState } from "react";
 import axios from "axios";
-import FileImage from '/protocols/bonkbot.png';
-import { signAndConfirmBoth } from './common';
-
+import { signAndConfirmBoth } from '../utils/sign';
+import styles from "../app/create.module.css";
+import { useWallet } from "@solana/wallet-adapter-react";
 const CreateToken = () => {
-  const [displayPic, setDisplayPic] = useState(FileImage);
+  const [displayPic, setDisplayPic] = useState("");
   const [image,setImage] = useState();
-
-
+  const wallet = useWallet();
   const [network,setNetwork] = useState("devnet");
-  const [wallet,setWallet] = useState(""); 
+  const [wallet2,setWallet2] = useState(""); 
   const [name,setName] = useState("");
   const [symbol,setSymbol] = useState("");
   const [decimals,setDecimals] = useState(0);
@@ -46,7 +46,7 @@ const CreateToken = () => {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
-          "x-api-key": "", //Enter your API key here
+          "x-api-key": "FVejZwLRIaPbxTUr", //Enter your API key here
           Accept: "*/*",
           "Access-Control-Allow-Origin": "*",
         },
@@ -60,7 +60,7 @@ const CreateToken = () => {
           if(res.data.success === true)
           {
             const encodedTransaction = res.data.result.encoded_transaction;
-            const returned = signAndConfirmBoth(network,encodedTransaction,callback);
+            const returned = signAndConfirmBoth(network,encodedTransaction,callback,wallet);
             console.log(returned);
           }
           
@@ -82,7 +82,7 @@ const CreateToken = () => {
       url: "https://api.shyft.to/sol/v1/token/mint_detach",
       method: "POST",
       headers: {
-        "x-api-key": "", //Enter your API key here
+        "x-api-key": "FVejZwLRIaPbxTUr", //Enter your API key here
       },
       data: {
         "network": network,
@@ -98,7 +98,7 @@ const CreateToken = () => {
         if(res.data.success === true)
         {
           const encodedTransaction = res.data.result.encoded_transaction;
-          const returned = signAndConfirmBoth(network,encodedTransaction,callback);
+          const returned = signAndConfirmBoth(network,encodedTransaction,callback,wallet);
           console.log(returned);
         }
         
@@ -112,18 +112,16 @@ const CreateToken = () => {
   }
 
   return (
-    <div className="gradient-background">
-        <div className="container p-5 forms-container">
+    <div className={styles.gradientbackground}>
+        <div className="col">
           <div
             className="form-container border border-light rounded pt-3 px-5 pb-5"
             style={{ backgroundColor: "#FFFFFF22" }}
           >
-            <h2 className="pt-4 text-center text-light cfont">Create a new coin on Solana</h2>
-            
+            <h2 className="pt-4 text-center text-light text-2xl">Create a new coin on Solana</h2> 
             <div>
               <div className="row">
-                <div className="col-12 col-md-4">
-                  <div className="img-container text-center mt-5">
+                  <div className="col img-container text-center mt-5">
                     <div
                       className="uploaded-img"
                       style={{
@@ -145,9 +143,9 @@ const CreateToken = () => {
                       />
                     </div>
                     <div className="mt-3"></div>
-                    <button className="button-24 text-light rounded-pill m-2">
-                      Select File
-                    </button>
+                    <button className={styles.button24}>
+                        Select File
+                        </button>
                     <br></br>
                     <input
                       type="file"
@@ -171,7 +169,7 @@ const CreateToken = () => {
                 </div>
                 <div className="col-12 col-md-8">
                   <div className="mt-5"></div>
-                  <div className="fields">
+                  <div className="mt-8">
                     <label className="fname">Network</label><br />
                     <small className="text-light">
                       Solana blockchain environment
@@ -179,7 +177,7 @@ const CreateToken = () => {
                     </small>
                     <select
                       name="network"
-                      className="form-control form-select"
+                      className="bg-[#111111] text-white font-poppins mt-2 form-select"
                       onChange={(e) => setNetwork(e.target.value)}
                     >
                       <option value="devnet">Devnet</option>
@@ -187,7 +185,7 @@ const CreateToken = () => {
                       <option value="mainnet-beta">Mainnet Beta</option>
                     </select>
                   </div>
-                  <div className="fields">
+                  <div className="mt-8">
                     <label className="fname">Your Wallet</label>
                     <br />
                     <small className="text-light">
@@ -196,14 +194,14 @@ const CreateToken = () => {
                     </small>
                     <input
                       type="text"
-                      className="form-control"
+                      className="bg-[#111111] text-white font-poppins mt-2"
                       placeholder="Enter Update Authority"
-                      value={wallet}
-                      onChange={(e) => setWallet(e.target.value)}
+                      value={wallet2}
+                      onChange={(e) => setWallet2(e.target.value)}
                       required
                     />
                   </div>
-                  <div className="fields">
+                  <div className="mt-8">
                     <label className="fname">Name</label>
                     <br />
                     <small className="text-light">
@@ -211,14 +209,14 @@ const CreateToken = () => {
                     </small>
                     <input
                       type="text"
-                      className="form-control"
+                      className="bg-[#111111] text-white font-poppins mt-2"
                       placeholder="Enter Token Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
                     />
                   </div>
-                  <div className="fields">
+                  <div className="mt-8">
                     <label className="fname">Symbol</label>
                     <br />
                     <small className="text-light">
@@ -226,14 +224,14 @@ const CreateToken = () => {
                     </small>
                     <input
                       type="text"
-                      className="form-control"
+                      className="bg-[#111111] text-white font-poppins mt-2"
                       placeholder="Enter Token symbol"
                       value={symbol}
                       onChange={(e) => setSymbol(e.target.value)}
                       required
                     />
                   </div>
-                  <div className="fields">
+                  <div className="mt-8">
                     <label className="fname">Decimals</label>
                     <br />
                     <small className="text-light">
@@ -241,20 +239,20 @@ const CreateToken = () => {
                     </small>
                     <input
                       type="text"
-                      className="form-control"
+                      className="bg-[#111111] text-white font-poppins mt-2"
                       placeholder="Enter Decimal Value"
                       value={decimals}
                       onChange={(e) => setDecimals(e.target.value)}
                     />
                   </div>
-                  <div className="fields">
+                  <div className="mt-8">
                     <label className="fname">Description</label>
                     <br />
                     <small className="text-light">
                       Add a small story to this NFT (string)
                     </small>
                     <textarea
-                      className="form-control"
+                      className="bg-[#111111] text-white font-poppins mt-2"
                       placeholder="Enter Description"
                       value={desc}
                       onChange={(e) => setDesc(e.target.value)}
@@ -262,10 +260,10 @@ const CreateToken = () => {
                     ></textarea>
                   </div>
                   
-                  <div className="fields">
+                  <div className="mt-8">
                     <button
                       type="submit"
-                      className="button-25"
+                      className={styles.button25}
                       onClick={handleSubmit}
                     >
                       Create A New Token
@@ -280,12 +278,12 @@ const CreateToken = () => {
               <h2 className="pt-4 text-center text-light cfont">Airdrop this newly created COIN</h2>
                 <div className="row">
                   <div className="col-sm-6">
-                    <div className="fields">
+                    <div className="mt-8">
                       <label className="fname">Enter Wallet ID</label>
                       
                       <input
                         type="text"
-                        className="form-control"
+                        className="bg-[#111111] text-white font-poppins mt-2"
                         placeholder="Enter Wallet Address to send tokens"
                         value={toWallet}
                         onChange={(e) => setToWallet(e.target.value)}
@@ -293,12 +291,12 @@ const CreateToken = () => {
                     </div>
                   </div>
                   <div className="col-sm-2">
-                    <div className="fields">
+                    <div className="mt-8">
                       <label className="fname">Amount</label>
                       
                       <input
                         type="number"
-                        className="form-control"
+                        className="bg-[#111111] text-white font-poppins mt-2"
                         placeholder="Amount"
                         value={amt}
                         onChange={(e) => setAmt(e.target.value)}
@@ -306,16 +304,15 @@ const CreateToken = () => {
                     </div>
                   </div>
                   <div className="col-sm-4" style={{paddingTop:"32px"}}>
-                  <div className="fields">
+                  <div className="mt-8">
                     <button
-                      className="button-25 mx-2"
+                      className={styles.button25}
                       onClick={MintTo}
                     >
                       Airdrop
                     </button>
                     <a
-                      
-                      className="button-25"
+                      className={styles.button25}
                       href={`https://explorer.solana.com/address/${minted}?cluster=${network}`}
                       target
                     >
@@ -326,8 +323,6 @@ const CreateToken = () => {
                 </div>
             </div>}
           
-
-          </div>
           </div>
           </div>
           
